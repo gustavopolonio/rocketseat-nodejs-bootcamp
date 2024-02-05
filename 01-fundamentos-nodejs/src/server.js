@@ -30,10 +30,10 @@ const server = http.createServer((req, res) => {
       email: 'gustavo@teste.com'
     })
 
-    return res.end('Criação de usuário')
+    return res.writeHead(201).end()
   }
 
-  return res.end('Hello!')
+  return res.writeHead(404).end()
 })
 
 server.listen(3333)
