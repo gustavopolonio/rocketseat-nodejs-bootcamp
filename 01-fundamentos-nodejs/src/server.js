@@ -9,16 +9,28 @@ import http from 'node:http'
 // PATCH => Atualizar uma informação específica de um recurso no back-end
 // DELETE => Deletar um recurso no back-end
 
+// Cabeçalhos (headers, tanto na req quanto na res) => Metadados
+
+
+const users = []
 
 const server = http.createServer((req, res) => {
   const { method, url } = req
   
   if (method === 'GET' && url === '/users') {
-    console.log('Listagem de usuários')
+    return res
+      .setHeader('Content-Type', 'application/json')
+      .end(JSON.stringify(users))
   }
 
   if (method === 'POST' && url === '/users') {
-    console.log('Criação de usuários')
+    users.push({
+      id: 1,
+      name: 'Gustavo',
+      email: 'gustavo@teste.com'
+    })
+
+    return res.end('Criação de usuário')
   }
 
   return res.end('Hello!')
