@@ -14,6 +14,13 @@ import { routes } from './routes.js'
 
 // Cabeçalhos (headers, tanto na req quanto na res) => Metadados
 
+// Query parameters: URL stateful sem dados sensíveis => filtros, paginação. Query param. geralmente não são obrigatórios
+  // http://localhost:3333/users?userId=1&name=Gustavo
+// Route parameters: Identificar recurso
+  // http://localhost:3333/users/1
+// Request body: Envio de infos de um form (são mais seguros que os 2 acima pois não ficam diretamente na URL)
+
+
 const server = http.createServer(async (req, res) => {
   const { method, url } = req
 
