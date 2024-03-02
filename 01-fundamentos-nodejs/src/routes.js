@@ -33,6 +33,21 @@ export const routes = [
     }
   },
   {
+    method: 'PUT',
+    path: buildRoutePath('/users/:id'),
+    handler: async (req, res) => {
+      const { id } = req.params
+      const { name, age } = req.body
+
+      await database.update('users', id, {
+        name,
+        age
+      })
+
+      return res.writeHead(204).end()
+    }
+  },
+  {
     method: 'DELETE',
     path: buildRoutePath('/users/:id'),
     handler: async (req, res) => {
