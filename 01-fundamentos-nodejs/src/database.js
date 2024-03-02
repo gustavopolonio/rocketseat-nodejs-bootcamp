@@ -19,8 +19,14 @@ export class Database {
     await fs.writeFile(databasePath, JSON.stringify(this.#database))
   }
 
-  select(table) {
-    return this.#database[table] ?? []
+  select(table, name) {
+    let data = this.#database[table] ?? []
+
+    if (name) {
+      data = data.filter(row => row.name.toLowerCase().includes(name.toLowerCase()))
+    }
+
+    return data
   }
 
   async insert(table, data) {
