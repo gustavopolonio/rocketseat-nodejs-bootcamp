@@ -17,7 +17,7 @@ declare module 'knex/types/tables' {
       description: string
       date_time: string
       is_within_diet: boolean
-      session_id: string
+      created_at: string
     }
   }
 }
