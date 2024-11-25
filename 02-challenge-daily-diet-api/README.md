@@ -2,7 +2,7 @@
 
 [x] - It should be possible to create a user
 [x] - It should be possible to identify the user among the requests
-[ ] - It should be possible to create a meal with the following information:
+[x] - It should be possible to create a meal with the following information:
   Meals should be related to a user.
     - Name
     - Description
@@ -20,3 +20,5 @@
   - Best streak of meals within the diet
 
 [ ] - The user can only view, edit, and delete the meals they created
+
+-> Test if deletes one user all meals related to him are also deleted.
