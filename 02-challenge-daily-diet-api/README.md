@@ -1,6 +1,6 @@
 # Functional requirements
 
-[ ] - It should be possible to create a user
+[x] - It should be possible to create a user
 [ ] - It should be possible to identify the user among the requests
 [ ] - It should be possible to create a meal with the following information:
   Meals should be related to a user.
