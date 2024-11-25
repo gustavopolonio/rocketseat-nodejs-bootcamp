@@ -5,6 +5,20 @@ import { knex } from '../database'
 import { randomUUID } from 'crypto'
 
 export async function mealsRoutes(app: FastifyInstance) {
+  app.get(
+    '/',
+    { preHandler: [checkSessionIdExists] },
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { user } = request
+
+      const meals = await knex('meals')
+        .where('user_id', user?.id)
+        .orderBy('created_at', 'desc')
+
+      return reply.send({ meals })
+    },
+  )
+
   app.post(
     '/',
     { preHandler: [checkSessionIdExists] },
