@@ -9,7 +9,7 @@
     - Date and Time
     - Whether it is within the diet or not
 
-[ ] - It should be possible to edit a meal, allowing changes to all the data above
+[x] - It should be possible to edit a meal, allowing changes to all the data above
 [ ] - It should be possible to delete a meal
 [ ] - It should be possible to list all meals of a user
 [ ] - It should be possible to view a single meal
@@ -22,3 +22,4 @@
 [ ] - The user can only view, edit, and delete the meals they created
 
 -> Test if deletes one user all meals related to him are also deleted.
+-> Add tests
