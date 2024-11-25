@@ -46,6 +46,63 @@ export async function mealsRoutes(app: FastifyInstance) {
     },
   )
 
+  app.get(
+    '/metrics',
+    { preHandler: [checkSessionIdExists] },
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { user } = request
+
+      const meals = await knex('meals')
+        .where('user_id', user?.id)
+        .orderBy('created_at', 'desc')
+
+      const { bestStreak } = meals.reduce(
+        (acc, meal) => {
+          if (meal.is_within_diet) {
+            acc.currentStreak++
+          } else {
+            acc.currentStreak = 0
+          }
+
+          if (acc.currentStreak > acc.bestStreak) {
+            acc.bestStreak = acc.currentStreak
+          }
+
+          return acc
+        },
+        {
+          currentStreak: 0,
+          bestStreak: 0,
+        },
+      )
+
+      const totalMealsOnDiet = await knex('meals')
+        .where({
+          user_id: user?.id,
+          is_within_diet: true,
+        })
+        .count('id', { as: 'onDiet' })
+        .first()
+
+      const totalMealsOffDiet = await knex('meals')
+        .where({
+          user_id: user?.id,
+          is_within_diet: false,
+        })
+        .count('id', { as: 'offDiet' })
+        .first()
+
+      return reply.send({
+        metrics: {
+          totalMeals: meals.length,
+          totalMealsOnDiet: totalMealsOnDiet?.onDiet,
+          totalMealsOffDiet: totalMealsOffDiet?.offDiet,
+          bestStreak,
+        },
+      })
+    },
+  )
+
   app.post(
     '/',
     { preHandler: [checkSessionIdExists] },

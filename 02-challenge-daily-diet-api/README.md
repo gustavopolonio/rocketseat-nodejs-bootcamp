@@ -13,13 +13,13 @@
 [x] - It should be possible to delete a meal
 [x] - It should be possible to list all meals of a user
 [x] - It should be possible to view a single meal
-[ ] - It should be possible to retrieve user metrics
+[x] - It should be possible to retrieve user metrics
   - Total number of meals created
   - Total number of meals within the diet
   - Total number of meals outside the diet
   - Best streak of meals within the diet
 
-[ ] - The user can only view, edit, and delete the meals they created
+[x] - The user can only view, edit, and delete the meals they created
 
 -> Test if deletes one user all meals related to him are also deleted.
 -> Add tests
