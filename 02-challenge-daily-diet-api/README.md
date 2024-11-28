@@ -23,3 +23,4 @@
 
 -> Test if deletes one user all meals related to him are also deleted.
 -> Add tests
+-> Deploy
