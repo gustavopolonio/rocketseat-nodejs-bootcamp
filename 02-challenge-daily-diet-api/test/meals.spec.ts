@@ -65,4 +65,42 @@ describe('Meals route', () => {
       ],
     })
   })
+
+  it('should be able to get a specific meal', async () => {
+    // Create user
+    const createUserResponse = await request(app.server).post('/users').send({
+      name: 'Gustavo',
+      email: 'gustavo@test.com',
+    })
+
+    const cookies = createUserResponse.get('Set-Cookie') ?? []
+
+    // Create meal
+    const createMealResponse = await request(app.server)
+      .post('/meals')
+      .set('Cookie', cookies)
+      .send({
+        name: 'Meal 1',
+        description: 'Description meal 1',
+        dateTime: '1732548778',
+        isWithinDiet: true,
+      })
+
+    const mealId = createMealResponse.body.meal.id
+
+    // Get meal
+    const getMealResponse = await request(app.server)
+      .get(`/meals/${mealId}`)
+      .set('Cookie', cookies)
+
+    expect(getMealResponse.statusCode).toEqual(200)
+    expect(getMealResponse.body).toEqual({
+      meal: expect.objectContaining({
+        name: 'Meal 1',
+        description: 'Description meal 1',
+        date_time: 1732548778,
+        is_within_diet: 1,
+      }),
+    })
+  })
 })
