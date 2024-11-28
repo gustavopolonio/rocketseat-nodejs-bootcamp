@@ -37,7 +37,7 @@ describe('Users route', () => {
       email: 'gustavo@test.com',
     })
 
-    expect(response.status).toBe(400)
+    expect(response.statusCode).toBe(400)
     expect(response.body.message).toBe('User already exists')
   })
 })
