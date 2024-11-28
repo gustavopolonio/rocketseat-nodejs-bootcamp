@@ -17,12 +17,27 @@ describe('Users route', () => {
     execSync('npm run knex migrate:latest')
   })
 
-  it('Should be able to create a user', async () => {
+  it('should be able to create a user', async () => {
     const response = await request(app.server).post('/users').send({
       name: 'Gustavo',
       email: 'gustavo@test.com',
     })
 
     expect(response.statusCode).toEqual(201)
+  })
+
+  it('should not be able to create an existing user', async () => {
+    await request(app.server).post('/users').send({
+      name: 'Gustavo',
+      email: 'gustavo@test.com',
+    })
+
+    const response = await request(app.server).post('/users').send({
+      name: 'Gustavo',
+      email: 'gustavo@test.com',
+    })
+
+    expect(response.status).toBe(400)
+    expect(response.body.message).toBe('User already exists')
   })
 })
