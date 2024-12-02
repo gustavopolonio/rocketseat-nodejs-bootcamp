@@ -229,4 +229,30 @@ describe('Meals route', () => {
 
     expect(updateMealResponse.statusCode).toEqual(204)
   })
+
+  it('should not be able to edit an unexisting meal', async () => {
+    // Create user
+    const createUserResponse = await request(app.server).post('/users').send({
+      name: 'Gustavo',
+      email: 'gustavo@test.com',
+    })
+
+    const cookies = createUserResponse.get('Set-Cookie') ?? []
+
+    const mealId = randomUUID()
+
+    // Update meal
+    const updateMealResponse = await request(app.server)
+      .put(`/meals/${mealId}`)
+      .set('Cookie', cookies)
+      .send({
+        name: 'Meal 1 - updated',
+        description: 'Description meal 1',
+        dateTime: '1732548178',
+        isWithinDiet: false,
+      })
+
+    expect(updateMealResponse.statusCode).toEqual(404)
+    expect(updateMealResponse.body.error).toEqual('Meal not found')
+  })
 })
