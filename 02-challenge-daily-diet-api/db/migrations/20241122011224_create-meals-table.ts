@@ -7,7 +7,6 @@ export async function up(knex: Knex): Promise<void> {
       .foreign('user_id')
       .references('User.id')
       .deferrable('deferred')
-      .notNullable()
       .onUpdate('CASCADE')
       .onDelete('CASCADE')
     table.string('name').notNullable()
