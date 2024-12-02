@@ -13,7 +13,7 @@ export async function mealsRoutes(app: FastifyInstance) {
 
       const meals = await knex('meals')
         .where('user_id', user?.id)
-        .orderBy('created_at', 'desc')
+        .orderBy('date_time', 'desc')
 
       return reply.send({ meals })
     },
@@ -54,7 +54,7 @@ export async function mealsRoutes(app: FastifyInstance) {
 
       const meals = await knex('meals')
         .where('user_id', user?.id)
-        .orderBy('created_at', 'desc')
+        .orderBy('date_time', 'desc')
 
       const { bestStreak } = meals.reduce(
         (acc, meal) => {
