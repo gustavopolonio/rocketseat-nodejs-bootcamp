@@ -255,4 +255,34 @@ describe('Meals route', () => {
     expect(updateMealResponse.statusCode).toEqual(404)
     expect(updateMealResponse.body.error).toEqual('Meal not found')
   })
+
+  it('should be able to delete a meal', async () => {
+    // Create user
+    const createUserResponse = await request(app.server).post('/users').send({
+      name: 'Gustavo',
+      email: 'gustavo@test.com',
+    })
+
+    const cookies = createUserResponse.get('Set-Cookie') ?? []
+
+    // Create meal
+    const createMealResponse = await request(app.server)
+      .post('/meals')
+      .set('Cookie', cookies)
+      .send({
+        name: 'Meal 1',
+        description: 'Description meal 1',
+        dateTime: '1732548178',
+        isWithinDiet: true,
+      })
+
+    const mealId = createMealResponse.body.meal.id
+
+    // Delete meal
+    const deleteMealResponse = await request(app.server)
+      .delete(`/meals/${mealId}`)
+      .set('Cookie', cookies)
+
+    expect(deleteMealResponse.statusCode).toEqual(204)
+  })
 })
