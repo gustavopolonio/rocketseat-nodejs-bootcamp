@@ -20,5 +20,3 @@
   - Best streak of meals within the diet
 
 [x] - The user can only view, edit, and delete the meals they created
-
--> Deploy
