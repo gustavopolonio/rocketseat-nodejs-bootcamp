@@ -122,4 +122,52 @@ describe('Meals route', () => {
     expect(getMealResponse.statusCode).toEqual(404)
     expect(getMealResponse.body.error).toEqual('Meal not found')
   })
+
+  it('should be able to get user metrics', async () => {
+    // Create user
+    const createUserResponse = await request(app.server).post('/users').send({
+      name: 'Gustavo',
+      email: 'gustavo@test.com',
+    })
+
+    const cookies = createUserResponse.get('Set-Cookie') ?? []
+
+    // Create meal 1 (onDiet)
+    await request(app.server).post('/meals').set('Cookie', cookies).send({
+      name: 'Meal 1',
+      description: 'Description meal 1',
+      dateTime: '1732548178',
+      isWithinDiet: true,
+    })
+
+    // Create meal 2 (onDiet)
+    await request(app.server).post('/meals').set('Cookie', cookies).send({
+      name: 'Meal 2',
+      description: 'Description meal 2',
+      dateTime: '1732548878',
+      isWithinDiet: true,
+    })
+
+    // Create meal 3 (offDiet)
+    await request(app.server).post('/meals').set('Cookie', cookies).send({
+      name: 'Meal 3',
+      description: 'Description meal 3',
+      dateTime: '1732548578',
+      isWithinDiet: false,
+    })
+
+    const getUserMetricsResponse = await request(app.server)
+      .get('/meals/metrics')
+      .set('Cookie', cookies)
+
+    expect(getUserMetricsResponse.statusCode).toEqual(200)
+    expect(getUserMetricsResponse.body).toEqual({
+      metrics: {
+        totalMeals: 3,
+        totalMealsOnDiet: 2,
+        totalMealsOffDiet: 1,
+        bestStreak: 1,
+      },
+    })
+  })
 })
