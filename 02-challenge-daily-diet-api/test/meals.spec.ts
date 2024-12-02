@@ -2,6 +2,7 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest'
 import request from 'supertest'
 import { execSync } from 'child_process'
 import { app } from '../src/app'
+import { randomUUID } from 'crypto'
 
 describe('Meals route', () => {
   beforeAll(() => {
@@ -102,5 +103,23 @@ describe('Meals route', () => {
         is_within_diet: 1,
       }),
     })
+  })
+
+  it('should not be able to get an unexisting meal', async () => {
+    // Create user
+    const createUserResponse = await request(app.server).post('/users').send({
+      name: 'Gustavo',
+      email: 'gustavo@test.com',
+    })
+
+    const cookies = createUserResponse.get('Set-Cookie') ?? []
+    const mealId = randomUUID()
+
+    const getMealResponse = await request(app.server)
+      .get(`/meals/${mealId}`)
+      .set('Cookie', cookies)
+
+    expect(getMealResponse.statusCode).toEqual(404)
+    expect(getMealResponse.body.error).toEqual('Meal not found')
   })
 })
