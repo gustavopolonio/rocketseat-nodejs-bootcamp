@@ -286,7 +286,7 @@ describe('Meals route', () => {
     expect(deleteMealResponse.statusCode).toEqual(204)
   })
 
-  it.only('should not be able to delete an unexisting meal', async () => {
+  it('should not be able to delete an unexisting meal', async () => {
     // Create user
     const createUserResponse = await request(app.server).post('/users').send({
       name: 'Gustavo',
