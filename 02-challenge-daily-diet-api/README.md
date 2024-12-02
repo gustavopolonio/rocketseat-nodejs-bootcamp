@@ -21,6 +21,4 @@
 
 [x] - The user can only view, edit, and delete the meals they created
 
--> Test if deletes one user all meals related to him are also deleted.
--> Add tests
 -> Deploy
