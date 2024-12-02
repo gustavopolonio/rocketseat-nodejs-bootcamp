@@ -52,16 +52,16 @@ describe('Meals route', () => {
     expect(listMealsResponse.body).toEqual({
       meals: [
         expect.objectContaining({
-          name: 'Meal 1',
-          description: 'Description meal 1',
-          date_time: 1732548778,
-          is_within_diet: 1,
-        }),
-        expect.objectContaining({
           name: 'Meal 2',
           description: 'Description meal 2',
           date_time: 1732548878,
           is_within_diet: 0,
+        }),
+        expect.objectContaining({
+          name: 'Meal 1',
+          description: 'Description meal 1',
+          date_time: 1732548778,
+          is_within_diet: 1,
         }),
       ],
     })
