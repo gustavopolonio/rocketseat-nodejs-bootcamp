@@ -4,11 +4,10 @@ export async function up(knex: Knex): Promise<void> {
   return knex.schema.createTable('meals', (table) => {
     table.uuid('id').primary()
     table
-      .string('user_id')
-      .notNullable()
-      .references('id')
-      .inTable('users')
+      .foreign('user_id')
+      .references('User.id')
       .deferrable('deferred')
+      .notNullable()
       .onUpdate('CASCADE')
       .onDelete('CASCADE')
     table.string('name').notNullable()
