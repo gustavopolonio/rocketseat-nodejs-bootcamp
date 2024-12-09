@@ -1,5 +1,3 @@
-// it should not be able to authenticate with wrong password
-
 import { describe, expect, it } from 'vitest'
 import { hash } from 'bcryptjs'
 import { AuthenticateUseCase } from './authenticate'
@@ -36,6 +34,26 @@ describe('Authenticate Use Case', () => {
       sut.execute({
         email: 'user1@test.test',
         password: '123456',
+      }),
+    ).rejects.toBeInstanceOf(InvalidCredentialsError)
+  })
+
+  it('should not be able to authenticate with wrong password', async () => {
+    const usersRepository = new InMemoryUsersRepository()
+    const sut = new AuthenticateUseCase(usersRepository)
+
+    const email = 'user1@test.test'
+
+    await usersRepository.create({
+      name: 'User test 01',
+      email,
+      password_hash: await hash('123456', 6),
+    })
+
+    await expect(
+      sut.execute({
+        email,
+        password: '123123',
       }),
     ).rejects.toBeInstanceOf(InvalidCredentialsError)
   })
