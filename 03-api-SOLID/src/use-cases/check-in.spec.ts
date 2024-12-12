@@ -3,6 +3,7 @@ import { CheckInUseCase } from './check-in'
 import { InMemoryCheckInsRepository } from '@/repositories/in-memory/in-memory-check-ins-repository'
 import { InMemoryGymsRepository } from '@/repositories/in-memory/in-memory-gyms-repository'
 import { GymsRepository } from '@/repositories/gyms-repository'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 let gymsRepository: GymsRepository
 let sut: CheckInUseCase
@@ -94,5 +95,14 @@ describe('Check-in Use Case', () => {
         created_at: new Date(),
       }),
     })
+  })
+
+  it('should not be able to check in on an unexisting gym', async () => {
+    await expect(
+      sut.execute({
+        userId: 'user-01',
+        gymId: 'non-existing-id',
+      }),
+    ).rejects.toBeInstanceOf(ResourceNotFoundError)
   })
 })
