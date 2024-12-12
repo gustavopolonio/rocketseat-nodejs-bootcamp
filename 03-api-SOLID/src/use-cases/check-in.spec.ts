@@ -4,6 +4,8 @@ import { InMemoryCheckInsRepository } from '@/repositories/in-memory/in-memory-c
 import { InMemoryGymsRepository } from '@/repositories/in-memory/in-memory-gyms-repository'
 import { GymsRepository } from '@/repositories/gyms-repository'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
+import { MaxDistanceError } from './errors/max-distance-error'
+import { MaxNumberOfCheckInsError } from './errors/max-number-of-check-ins-error'
 
 let gymsRepository: GymsRepository
 let sut: CheckInUseCase
@@ -67,10 +69,10 @@ describe('Check-in Use Case', () => {
         userLatitude: 0,
         userLongitude: 0,
       }),
-    ).rejects.toBeInstanceOf(Error)
+    ).rejects.toBeInstanceOf(MaxNumberOfCheckInsError)
   })
 
-  it.only('should be able to check in twice on different days', async () => {
+  it('should be able to check in twice on different days', async () => {
     const gymId = 'gym-01'
 
     await gymsRepository.create({
@@ -135,6 +137,6 @@ describe('Check-in Use Case', () => {
         userLatitude: -21.9979778,
         userLongitude: -47.8983264,
       }),
-    ).rejects.toBeInstanceOf(Error)
+    ).rejects.toBeInstanceOf(MaxDistanceError)
   })
 })
