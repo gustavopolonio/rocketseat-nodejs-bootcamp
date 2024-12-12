@@ -117,4 +117,24 @@ describe('Check-in Use Case', () => {
       }),
     ).rejects.toBeInstanceOf(ResourceNotFoundError)
   })
+
+  it('should not be able to check in on a distant gym', async () => {
+    const gymId = 'gym-01'
+
+    await gymsRepository.create({
+      id: gymId,
+      name: 'Gym 01',
+      latitude: 0,
+      longitude: 0,
+    })
+
+    await expect(
+      sut.execute({
+        gymId,
+        userId: 'user-01',
+        userLatitude: -21.9979778,
+        userLongitude: -47.8983264,
+      }),
+    ).rejects.toBeInstanceOf(Error)
+  })
 })
