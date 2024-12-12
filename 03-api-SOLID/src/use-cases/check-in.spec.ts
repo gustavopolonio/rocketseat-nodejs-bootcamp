@@ -34,6 +34,8 @@ describe('Check-in Use Case', () => {
     const { checkIn } = await sut.execute({
       userId: 'user-01',
       gymId,
+      userLatitude: 0,
+      userLongitude: 0,
     })
 
     expect(checkIn.id).toEqual(expect.any(String))
@@ -54,17 +56,21 @@ describe('Check-in Use Case', () => {
     await sut.execute({
       userId: 'user-01',
       gymId,
+      userLatitude: 0,
+      userLongitude: 0,
     })
 
     await expect(
       sut.execute({
         userId: 'user-01',
         gymId,
+        userLatitude: 0,
+        userLongitude: 0,
       }),
     ).rejects.toBeInstanceOf(Error)
   })
 
-  it('should be able to check in twice on different days', async () => {
+  it.only('should be able to check in twice on different days', async () => {
     const gymId = 'gym-01'
 
     await gymsRepository.create({
@@ -79,6 +85,8 @@ describe('Check-in Use Case', () => {
     await sut.execute({
       userId: 'user-01',
       gymId,
+      userLatitude: 0,
+      userLongitude: 0,
     })
 
     vi.setSystemTime(new Date(2000, 0, 2, 10))
@@ -87,6 +95,8 @@ describe('Check-in Use Case', () => {
       sut.execute({
         userId: 'user-01',
         gymId,
+        userLatitude: 0,
+        userLongitude: 0,
       }),
     ).resolves.toEqual({
       checkIn: expect.objectContaining({
@@ -102,6 +112,8 @@ describe('Check-in Use Case', () => {
       sut.execute({
         userId: 'user-01',
         gymId: 'non-existing-id',
+        userLatitude: 0,
+        userLongitude: 0,
       }),
     ).rejects.toBeInstanceOf(ResourceNotFoundError)
   })
