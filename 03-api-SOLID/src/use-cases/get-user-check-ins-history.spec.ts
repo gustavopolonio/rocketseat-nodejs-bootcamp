@@ -46,4 +46,37 @@ describe('Get User Check-ins History Use Case', () => {
       }),
     ])
   })
+
+  it('should be able to get paginated user check-ins history', async () => {
+    const userId = 'user-01'
+
+    for (let i = 1; i <= 22; i++) {
+      await checkInsRepository.create({
+        user_id: userId,
+        gym_id: `gym-${i}`,
+      })
+    }
+
+    await checkInsRepository.create({
+      user_id: 'user-02',
+      gym_id: 'gym-02',
+    })
+
+    const { checkIns } = await sut.execute({
+      userId,
+      page: 2,
+    })
+
+    expect(checkIns).toHaveLength(2)
+    expect(checkIns).toEqual([
+      expect.objectContaining({
+        user_id: userId,
+        gym_id: 'gym-21',
+      }),
+      expect.objectContaining({
+        user_id: userId,
+        gym_id: 'gym-22',
+      }),
+    ])
+  })
 })
