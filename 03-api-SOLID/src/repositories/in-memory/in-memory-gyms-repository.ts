@@ -20,18 +20,20 @@ export class InMemoryGymsRepository implements GymsRepository {
       .slice((page - 1) * 20, page * 20)
   }
 
-  async getManyNearby(params: GetManyNearby) {
-    return this.items.filter((gym) => {
-      const distance = getDistanceInKilometersBetweenCoordinates(
-        {
-          latitude: params.userLatitude,
-          longitude: params.userLongitude,
-        },
-        { latitude: Number(gym.latitude), longitude: Number(gym.longitude) },
-      )
+  async getManyNearby(params: GetManyNearby, page: number) {
+    return this.items
+      .filter((gym) => {
+        const distance = getDistanceInKilometersBetweenCoordinates(
+          {
+            latitude: params.userLatitude,
+            longitude: params.userLongitude,
+          },
+          { latitude: Number(gym.latitude), longitude: Number(gym.longitude) },
+        )
 
-      return distance < 10
-    })
+        return distance < 10
+      })
+      .slice((page - 1) * 20, page * 20)
   }
 
   async create(data: Prisma.GymCreateManyInput) {
