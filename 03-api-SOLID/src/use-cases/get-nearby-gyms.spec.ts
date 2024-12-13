@@ -34,6 +34,7 @@ describe('Get Nearby Gyms Use Case', () => {
     const { gyms } = await sut.execute({
       userLatitude: 0,
       userLongitude: 0,
+      page: 1,
     })
 
     expect(gyms).toHaveLength(2)
@@ -43,6 +44,38 @@ describe('Get Nearby Gyms Use Case', () => {
       }),
       expect.objectContaining({
         name: 'Gym 02',
+      }),
+    ])
+  })
+
+  it('should be able to get paginated nearby gyms', async () => {
+    for (let i = 1; i <= 22; i++) {
+      await gymsRepository.create({
+        name: `Gym - ${i}`,
+        latitude: 0,
+        longitude: 0,
+      })
+    }
+
+    await gymsRepository.create({
+      name: 'Gym 03',
+      latitude: 10,
+      longitude: 10,
+    })
+
+    const { gyms } = await sut.execute({
+      userLatitude: 0,
+      userLongitude: 0,
+      page: 2,
+    })
+
+    expect(gyms).toHaveLength(2)
+    expect(gyms).toEqual([
+      expect.objectContaining({
+        name: 'Gym - 21',
+      }),
+      expect.objectContaining({
+        name: 'Gym - 22',
       }),
     ])
   })
