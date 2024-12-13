@@ -24,10 +24,7 @@ describe('Check-in Use Case', () => {
   })
 
   it('should be able to check in', async () => {
-    const gymId = 'gym-01'
-
-    await gymsRepository.create({
-      id: gymId,
+    const gym = await gymsRepository.create({
       name: 'Gym 01',
       latitude: 0,
       longitude: 0,
@@ -35,7 +32,7 @@ describe('Check-in Use Case', () => {
 
     const { checkIn } = await sut.execute({
       userId: 'user-01',
-      gymId,
+      gymId: gym.id,
       userLatitude: 0,
       userLongitude: 0,
     })
@@ -44,10 +41,7 @@ describe('Check-in Use Case', () => {
   })
 
   it('should not be able to check in twice on the same day', async () => {
-    const gymId = 'gym-01'
-
-    await gymsRepository.create({
-      id: gymId,
+    const gym = await gymsRepository.create({
       name: 'Gym 01',
       latitude: 0,
       longitude: 0,
@@ -57,7 +51,7 @@ describe('Check-in Use Case', () => {
 
     await sut.execute({
       userId: 'user-01',
-      gymId,
+      gymId: gym.id,
       userLatitude: 0,
       userLongitude: 0,
     })
@@ -65,7 +59,7 @@ describe('Check-in Use Case', () => {
     await expect(
       sut.execute({
         userId: 'user-01',
-        gymId,
+        gymId: gym.id,
         userLatitude: 0,
         userLongitude: 0,
       }),
@@ -73,10 +67,7 @@ describe('Check-in Use Case', () => {
   })
 
   it('should be able to check in twice on different days', async () => {
-    const gymId = 'gym-01'
-
-    await gymsRepository.create({
-      id: gymId,
+    const checkIn = await gymsRepository.create({
       name: 'Gym 01',
       latitude: 0,
       longitude: 0,
@@ -86,7 +77,7 @@ describe('Check-in Use Case', () => {
 
     await sut.execute({
       userId: 'user-01',
-      gymId,
+      gymId: checkIn.id,
       userLatitude: 0,
       userLongitude: 0,
     })
@@ -96,13 +87,13 @@ describe('Check-in Use Case', () => {
     await expect(
       sut.execute({
         userId: 'user-01',
-        gymId,
+        gymId: checkIn.id,
         userLatitude: 0,
         userLongitude: 0,
       }),
     ).resolves.toEqual({
       checkIn: expect.objectContaining({
-        gym_id: gymId,
+        gym_id: checkIn.id,
         user_id: 'user-01',
         created_at: new Date(),
       }),
@@ -121,10 +112,7 @@ describe('Check-in Use Case', () => {
   })
 
   it('should not be able to check in on a distant gym', async () => {
-    const gymId = 'gym-01'
-
-    await gymsRepository.create({
-      id: gymId,
+    const checkIn = await gymsRepository.create({
       name: 'Gym 01',
       latitude: 0,
       longitude: 0,
@@ -132,7 +120,7 @@ describe('Check-in Use Case', () => {
 
     await expect(
       sut.execute({
-        gymId,
+        gymId: checkIn.id,
         userId: 'user-01',
         userLatitude: -21.9979778,
         userLongitude: -47.8983264,
