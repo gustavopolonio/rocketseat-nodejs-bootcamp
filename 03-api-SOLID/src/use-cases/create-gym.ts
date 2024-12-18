@@ -1,7 +1,7 @@
 import { GymsRepository } from '@/repositories/gyms-repository'
 import { Gym } from '@prisma/client'
 
-interface CreateGymUseCaseProps {
+export interface CreateGymUseCaseProps {
   name: string
   description: string | null
   phone: string | null
