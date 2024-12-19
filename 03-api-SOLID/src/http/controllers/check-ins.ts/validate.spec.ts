@@ -14,16 +14,20 @@ describe('Validate check-in (e2e)', () => {
     await app.close()
   })
 
-  it('should be able to get validate a check-in', async () => {
+  it('should be able to validate a check-in', async () => {
     const name = 'Test 01'
     const email = 'test01@test.com'
     const password = '123456'
 
-    const { token } = await createAndAuthenticateUser(app, {
-      name,
-      email,
-      password,
-    })
+    const { token } = await createAndAuthenticateUser(
+      app,
+      {
+        name,
+        email,
+        password,
+      },
+      true,
+    )
 
     await createGym(app, token, {
       name: 'Gym 01',
