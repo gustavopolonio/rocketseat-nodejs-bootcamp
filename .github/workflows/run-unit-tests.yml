@@ -21,5 +21,6 @@ jobs:
         node-version: 20
         cache-dependency-path: ./03-api-SOLID/package-lock.json
         cache: 'npm'
-    - run: cd 03-api-SOLID && npm ci
+    - run: pwd
+    - run: npm ci
     - run: npm run test
