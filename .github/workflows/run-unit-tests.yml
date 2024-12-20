@@ -1,6 +1,9 @@
 name: Run unit tests
 
-on: [push]
+on:
+  push:
+    paths:
+      - '03-api-SOLID/**'
 
 jobs:
   run-unit-tests:
@@ -13,5 +16,5 @@ jobs:
       with:
         node-version: 18
         cache: 'npm'
-    - run: npm ci
-    - run: npm run test
+    - run: cd 03-api-SOLID && npm ci
+    - run: cd 03-api-SOLID && npm run test
