@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - '03-api-SOLID/**'
+      - '.github/workflows/**'
 
 jobs:
   run-unit-tests:
@@ -17,7 +18,7 @@ jobs:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
       with:
-        node-version: 18
+        node-version: 20
         cache-dependency-path: 03-api-SOLID/package-lock.json
         cache: 'npm'
     - run: npm ci
