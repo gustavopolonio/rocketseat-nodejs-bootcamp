@@ -10,16 +10,16 @@ jobs:
   run-unit-tests:
     name: Run unit tests
     runs-on: ubuntu-latest
-    # defaults:
-    #   run:
-    #     working-directory: ./03-api-SOLID
+    defaults:
+      run:
+        working-directory: ./03-api-SOLID
 
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
       with:
         node-version: 20
-        # cache-dependency-path: ./03-api-SOLID/package-lock.json
+        cache-dependency-path: ./03-api-SOLID/package-lock.json
         cache: 'npm'
-    - run: npm ci
+    - run: cd 03-api-SOLID && npm ci
     - run: npm run test
