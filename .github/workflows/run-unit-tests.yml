@@ -18,7 +18,7 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version: 18
-        # cache-dependency-path: 03-api-SOLID/package-lock.json
-        # cache: 'npm'
+        cache-dependency-path: 03-api-SOLID/package-lock.json
+        cache: 'npm'
     - run: npm ci
     - run: npm run test
