@@ -1,0 +1,37 @@
+name: Run E2E tests
+
+on:
+  pull_request:
+    paths:
+      - '03-api-SOLID/**'
+
+jobs:
+  run-e2e-tests:
+    name: Run E2E tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 03-api-SOLID
+
+    services:
+      postgres:
+        image: bitnami/postgresql
+        ports:
+          - "5432:5432"
+        env:
+          POSTGRESQL_USERNAME: docker
+          POSTGRESQL_PASSWORD: docker
+          POSTGRESQL_DATABASE: apisolid
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache-dependency-path: 03-api-SOLID/package-lock.json
+        cache: 'npm'
+    - run: npm ci
+    - run: npm run test:e2e
+      env:
+        DATABASE_URL: "postgres://docker:docker@localhost:5432/apisolid?schema=public"
+        JWT_SECRET: jwt-secret
