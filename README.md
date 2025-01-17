@@ -124,6 +124,9 @@ cp .env.example .env
 # Run docker (you need have installed Docker Desktop):
 $ docker compose up
 
+# Run migrations:
+$ npx prisma migrate dev
+
 # Run development environment:
 $ npm run dev
 
